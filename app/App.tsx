@@ -73,7 +73,7 @@ export default function App() {
       );
     } else {
       const newFormWithId = { ...data, id: Date.now().toString() };
-      setSubmittedForms(prevForms => [...prevForms, newFormWithId]);
+      setSubmittedForms(prevForms => [newFormWithId, ...prevForms]);
     }
     resetFormData();
     setCurrentScreen('viewer');
