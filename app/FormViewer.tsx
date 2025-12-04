@@ -22,7 +22,8 @@ export default function FormViewer({ onGoToForm, submittedForms, onEditForm }: F
       // NOTE: currently the information is directly converted to JSON which is the most conveninent way.
       //       However we could just send a list of the answers instead of both question ids and answers
       //       Or we could potentially compress the data which would take less space.
-      const dataString = JSON.stringify(formData);
+      const dataString = JSON.stringify(Object.values(formData));
+      // const dataString = JSON.stringify(compress(Object.values(formData)));
       setQrCodeData(dataString);
       setIsQrModalVisible(true);
     } catch (error) {
