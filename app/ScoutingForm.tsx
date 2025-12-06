@@ -1,6 +1,6 @@
 import { FontAwesome } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
-import { Modal, SafeAreaView, ScrollView, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Modal, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import formFields from '../data/form_fields/2025.js';
 
 interface ScoutingFormProps {
@@ -68,15 +68,32 @@ export default function ScoutingForm({ initialFormData, onSubmit, onCancelEdit, 
       case 'switch':
         return (
           <View key={field.id} style={styles.fieldContainer}>
-            <View style={styles.switchContainer}>
-              <Text style={styles.label}>{field.label}</Text>
-              <Switch
-                trackColor={{ false: "#767577", true: "#81b0ff" }}
-                thumbColor={formData[field.id] ? "#f5dd4b" : "#f4f3f4"}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={(value) => handleSwitchChange(field.id, value)}
-                value={formData[field.id]}
-              />
+            <Text style={styles.label}>{field.label}</Text>
+            <View style={styles.toggleButtonContainer}>
+              <TouchableOpacity
+                style={[
+                  styles.toggleButton,
+                  formData[field.id] ? styles.toggleButtonActive : styles.toggleButtonInactive
+                ]}
+                onPress={() => handleSwitchChange(field.id, true)}
+              >
+                <FontAwesome name="check" size={24} color={formData[field.id] ? '#ffffff' : '#cbd5e0'} />
+                <Text style={[styles.toggleButtonText, formData[field.id] ? styles.toggleButtonTextActive : styles.toggleButtonTextInactive]}>
+                  Yes
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.toggleButton,
+                  !formData[field.id] ? styles.toggleButtonActive : styles.toggleButtonInactive
+                ]}
+                onPress={() => handleSwitchChange(field.id, false)}
+              >
+                <FontAwesome name="times" size={24} color={!formData[field.id] ? '#ffffff' : '#cbd5e0'} />
+                <Text style={[styles.toggleButtonText, !formData[field.id] ? styles.toggleButtonTextActive : styles.toggleButtonTextInactive]}>
+                  No
+                </Text>
+              </TouchableOpacity>
             </View>
             <Text style={styles.currentValue}>
               {field.label.replace(':', '')}: {formData[field.id] ? 'Yes' : 'No'}
@@ -260,11 +277,44 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontStyle: 'italic',
   },
-  switchContainer: {
+  toggleButtonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+    gap: 15,
+    marginTop: 12,
+    marginBottom: 10,
+  },
+  toggleButton: {
+    flexDirection: 'column',
     alignItems: 'center',
-    paddingVertical: 5,
+    justifyContent: 'center',
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+    borderRadius: 12,
+    minWidth: 100,
+    height: 90,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  toggleButtonActive: {
+    backgroundColor: '#4CAF50',
+  },
+  toggleButtonInactive: {
+    backgroundColor: '#e5e7eb',
+  },
+  toggleButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginTop: 8,
+  },
+  toggleButtonTextActive: {
+    color: '#ffffff',
+  },
+  toggleButtonTextInactive: {
+    color: '#9ca3af',
   },
   actionButtonRow: {
     flexDirection: 'row',

@@ -1,6 +1,6 @@
 import { FontAwesome } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { Button, Modal, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Modal, Platform, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 
 interface FormViewerProps {
@@ -13,6 +13,8 @@ export default function FormViewer({ onGoToForm, submittedForms, onEditForm }: F
   const [isQrModalVisible, setIsQrModalVisible] = useState<boolean>(false);
   const [qrCodeData, setQrCodeData] = useState('');
 
+  const {width, height} = useWindowDimensions();
+
   const showQrCode = (formData: any) => {
     try {
       // Convert formData to JSON
@@ -20,7 +22,8 @@ export default function FormViewer({ onGoToForm, submittedForms, onEditForm }: F
       // NOTE: currently the information is directly converted to JSON which is the most conveninent way.
       //       However we could just send a list of the answers instead of both question ids and answers
       //       Or we could potentially compress the data which would take less space.
-      const dataString = JSON.stringify(formData);
+      const dataString = JSON.stringify(Object.values(formData));
+      // const dataString = JSON.stringify(compress(Object.values(formData)));
       setQrCodeData(dataString);
       setIsQrModalVisible(true);
     } catch (error) {
@@ -37,6 +40,20 @@ export default function FormViewer({ onGoToForm, submittedForms, onEditForm }: F
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <Text style={styles.title}>Submitted Forms</Text>
+        {/*"Go to Scouting Form" Button*/}
+        <View style={[styles.buttonContainer]}>
+          <TouchableOpacity
+            onPress={onGoToForm}
+            style={[styles.newButtonModal]}
+          >
+            <FontAwesome
+              name="plus"
+              size = {24}
+              color = "white"
+            />
+            <Text style={styles.newButtonText}>New</Text>
+          </TouchableOpacity>
+        </View>
 
         {submittedForms.length === 0 ? (
           <Text style={styles.noFormsText}>No forms submitted yet. Go fill one out!</Text>
@@ -48,7 +65,7 @@ export default function FormViewer({ onGoToForm, submittedForms, onEditForm }: F
                 onPress={() => onEditForm(form.id)}
               >
                 <Text style={styles.formItemTitle}>Team: {form.teamNumber || 'N/A'}</Text>
-                <Text style={styles.formItemText}>Teleop Points: {form.teleopPoints || 'N/A'}</Text>
+                <Text style={styles.formItemText}>Match number: {form.matchNumber || 'N/A'}</Text>
                 <Text style={styles.formItemTextSmall}>Click to View/Edit</Text>
               </TouchableOpacity>
 
@@ -63,15 +80,6 @@ export default function FormViewer({ onGoToForm, submittedForms, onEditForm }: F
             </View>
           ))
         )}
-
-        <View style={styles.buttonContainer}>
-          <Button
-            title="Go to Scouting Form"
-            onPress={onGoToForm}
-            color="#007AFF"
-          />
-        </View>
-
       </ScrollView>
 
       <Modal
@@ -86,7 +94,7 @@ export default function FormViewer({ onGoToForm, submittedForms, onEditForm }: F
             {qrCodeData ? (
               <QRCode
                 value={qrCodeData}
-                size={200}
+                size={(Platform.OS === 'web') ? 350:Math.min(width-30, height-120)}
                 color="black"
                 backgroundColor="white"
               />
@@ -185,9 +193,26 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   buttonContainer: {
-    marginTop: 30,
+    marginTop: 5,
+    marginBottom: 20,
     width: '100%',
-    paddingHorizontal: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'green'
+  },
+  newButtonModal: {
+    borderRadius: 10,
+    elevation: 2,
+    width: "100%",
+    alignItems: 'center',
+    shadowColor: "transparent",
+    height: 50
+  },
+  newButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontSize: 16,
   },
   // Modal Styles (for QR code modal)
   centeredView: {
@@ -197,10 +222,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
   },
   modalView: {
-    margin: 20,
+    margin: 10,
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 35,
+    padding: 20,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -210,7 +235,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    width: '80%',
+    width: '100%'
   },
   modalTitle: {
     fontSize: 22,

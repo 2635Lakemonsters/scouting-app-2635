@@ -72,8 +72,8 @@ export default function App() {
         prevForms.map(form => (form.id === data.id ? data : form))
       );
     } else {
-      const newFormWithId = { ...data, id: Date.now().toString() };
-      setSubmittedForms(prevForms => [...prevForms, newFormWithId]);
+      const newFormWithId = {id: Date.now().toString(), ...data};
+      setSubmittedForms(prevForms => [newFormWithId, ...prevForms]);
     }
     resetFormData();
     setCurrentScreen('viewer');
