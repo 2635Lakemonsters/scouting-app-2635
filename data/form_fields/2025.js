@@ -19,63 +19,26 @@ const formFields = [
 
   // Autonomous
   {
-    id: 'autoPoints',
-    label: 'Autonomous Points:',
-    type: 'textInput',
+    id: 'autoFuelScored',
+    label: 'Autonomous Fuel(Balls) Scored:',
+    type: 'counter',
     keyboardType: 'numeric',
     placeholder: 'e.g., 10',
     section: 'Autonomous Data',
   },
   {
-    id: 'autoCanScoreAlgae',
-    label: 'Can Score Algae in Auto:',
+    id: 'autoCanClimb',
+    label: 'Was the robot able to climb during auto?',
     type: 'switch',
     section: 'Autonomous Data',
   },
-  {
-    id: 'autoCanScoreCorrals',
-    label: 'Can Score in Corrals in Auto:',
-    type: 'switch',
-    section: 'Autonomous Data',
-  },
-
   // Teleop
   {
-    id: 'teleopPoints',
-    label: 'Teleop Points:',
+    id: 'teleopFuelScored',
+    label: 'Teleop Fuel Scored:',
     type: 'textInput',
     keyboardType: 'numeric',
     placeholder: 'e.g., 30',
-    section: 'Teleop Data',
-  },
-  {
-    id: 'canScoreCorralsL1',
-    label: 'Can Score Corrals L1:',
-    type: 'switch',
-    section: 'Teleop Data',
-  },
-  {
-    id: 'canScoreCorralsL2',
-    label: 'Can Score Corrals L2:',
-    type: 'switch',
-    section: 'Teleop Data',
-  },
-  {
-    id: 'canScoreCorralsL3',
-    label: 'Can Score Corrals L3:',
-    type: 'switch',
-    section: 'Teleop Data',
-  },
-  {
-    id: 'canScoreCorralsL4',
-    label: 'Can Score Corrals L4:',
-    type: 'switch',
-    section: 'Teleop Data',
-  },
-  {
-    id: 'canScoreAlgae',
-    label: 'Can Score Algae:',
-    type: 'switch',
     section: 'Teleop Data',
   },
   {
@@ -87,57 +50,14 @@ const formFields = [
 
   // Endgame
   {
-    id: 'endgamePoints',
-    label: 'Endgame Points:',
+    id: 'endgameClimb',
+    label: 'Endgame Climb:',
     type: 'textInput',
     keyboardType: 'numeric',
-    placeholder: 'e.g., 20',
+    placeholder: 'e.g., 0-3',
     section: 'Endgame',
   },
-  {
-    id: 'parkedInEndgame',
-    label: 'Parked in Endgame:',
-    type: 'switch',
-    section: 'Endgame',
-  },
-  {
-    id: 'climbedInEndgame',
-    label: 'Climbed in Endgame:',
-    type: 'switch',
-    section: 'Endgame',
-  },
-  {
-    id: 'coOpAchieved',
-    label: 'Co-op Objective Achieved:',
-    type: 'switch',
-    section: 'Endgame',
-  },
-
   // Robot Capabilities
-  {
-    id: 'canPickupCoralFromFloor',
-    label: 'Can Pick Up Corral from Floor:',
-    type: 'switch',
-    section: 'Robot Capabilities',
-  },
-  {
-    id: 'canPickupCorralFromFeeder',
-    label: 'Can Pick Up from Human Player Station:',
-    type: 'switch',
-    section: 'Robot Capabilities',
-  },
-  {
-    id: 'canPickupAlgaeFromFloor',
-    label: 'Can Pick Up Algae from Floor:',
-    type: 'switch',
-    section: 'Robot Capabilities',
-  },
-  {
-    id: 'canPickupAlgaeFromReef',
-    label: 'Can Pick Up Algae from Reef:',
-    type: 'switch',
-    section: 'Robot Capabilities',
-  },
   {
     id: 'mobilitySpeed',
     label: 'Mobility Rating (1-5):',

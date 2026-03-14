@@ -32,6 +32,18 @@ export default function ScoutingForm({ initialFormData, onSubmit, onCancelEdit, 
     }));
   };
 
+    const handleCounterChange = (id: string, delta: number) => {
+    setFormData((prevFormData: any) => {
+      const currentValue = Number(prevFormData[id] ?? 0);
+      const newValue = Math.max(0, currentValue + delta);
+
+      return {
+        ...prevFormData,
+        [id]: newValue,
+      };
+    });
+  };
+
   const confirmDelete = () => {
     setIsModalVisible(true);
   };
@@ -97,6 +109,38 @@ export default function ScoutingForm({ initialFormData, onSubmit, onCancelEdit, 
             </View>
             <Text style={styles.currentValue}>
               {field.label.replace(':', '')}: {formData[field.id] ? 'Yes' : 'No'}
+            </Text>
+          </View>
+        );
+            case 'counter':
+        return (
+          <View key={field.id} style={styles.fieldContainer}>
+            <Text style={styles.label}>{field.label}</Text>
+
+            <View style={styles.counterContainer}>
+              <TouchableOpacity
+                style={styles.counterButton}
+                onPress={() => handleCounterChange(field.id, -1)}
+              >
+                <FontAwesome name="minus" size={24} color="#ffffff" />
+              </TouchableOpacity>
+
+              <View style={styles.counterValueBox}>
+                <Text style={styles.counterValueText}>
+                  {Number(formData[field.id] ?? 0)}
+                </Text>
+              </View>
+
+              <TouchableOpacity
+                style={styles.counterButton}
+                onPress={() => handleCounterChange(field.id, 1)}
+              >
+                <FontAwesome name="plus" size={24} color="#ffffff" />
+              </TouchableOpacity>
+            </View>
+
+            <Text style={styles.currentValue}>
+              {field.label.replace(':', '')}: {Number(formData[field.id] ?? 0)}
             </Text>
           </View>
         );
@@ -359,6 +403,43 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+    counterContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 12,
+    marginBottom: 10,
+    gap: 15,
+  },
+  counterButton: {
+    backgroundColor: '#2563eb',
+    width: 60,
+    height: 60,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  counterValueBox: {
+    minWidth: 80,
+    height: 60,
+    borderRadius: 12,
+    backgroundColor: '#f7fafc',
+    borderWidth: 1,
+    borderColor: '#cbd5e0',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 16,
+  },
+  counterValueText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#1a202c',
   },
   modalView: {
     margin: 20,
